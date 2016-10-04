@@ -17,12 +17,12 @@ function connect() {
 		send('server', 'properties', props);
 
 		if (!('name' in props)) {
-			var username = '';
+			var name = '';
 
-			while (username.length < 4)
-				username = prompt('Username');
+			while (name.length < 4)
+				name = prompt('Username');
 
-			setProperty('name', username);
+			send('server', 'properties', {name: name});
 		}
 	});
 
