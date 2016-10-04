@@ -77,7 +77,14 @@ function handlePacket(from, type, data) {
 				window.location.reload(true);
 
 			metadata = data;
-			//document.getElementById('debug').textContent = JSON.stringify(data, undefined, '    ');
+			//handlePacket('local', 'chat', {type: 'code', code: JSON.stringify(data, undefined, '    ')});
+			break;
+
+		case 'changes':
+			data.opened.forEach(token => handlePacket('local', 'chat', {type: 'code', code: getProperty(token, 'name', token) + ' connected.'}));
+			data.closed.forEach(token => handlePacket('local', 'chat', {type: 'code', code: getProperty(token, 'name', token) + ' disconnected.'}));
+			data.properties.forEach(token => handlePacket('local', 'chat', {type: 'code', code: getProperty(token, 'name', token) + ' changed some properties.'}));
+
 			break;
 
 		case 'chat':
@@ -87,10 +94,13 @@ function handlePacket(from, type, data) {
 			if (from === metadata.index)
 				message.classList.add('self');
 
-			var username = document.createElement('div');
-			username.classList.add('username');
-			username.textContent = getProperty(from, 'name', 'Unknown user (' + from.substr(0, 6) + ')');
-			message.appendChild(username);
+			if (from !== 'local') {
+				var username = document.createElement('div');
+				username.classList.add('username');
+				username.style.color = getProperty(from, 'color', 'black');
+				username.textContent = getProperty(from, 'name', 'Unknown user (' + from.substr(0, 6) + ')');
+				message.appendChild(username);
+			}
 
 			var content;
 
@@ -113,6 +123,12 @@ function handlePacket(from, type, data) {
 					content = document.createElement('img');
 					content.classList.add('content');
 					content.src = data.src || '';
+					break;
+
+				case 'code':
+					content = document.createElement('pre');
+					content.classList.add('content');
+					content.textContent = data.code || '';
 					break;
 
 				default:
