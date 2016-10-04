@@ -41,13 +41,23 @@ function connect() {
 
 connect();
 
-function setName(name) {
-	send('server', 'properties', {name: name});
+function setProperty(property, value) {
+	let data = {};
+	data[property] = value;
+
+	send('server', 'properties', data);
+}
+
+function getProperty(from, property, fallback) {
+	return from in metadata.properties && property in metadata.properties[from] ? metadata.properties[from][property] : fallback;
 }
 
 function handlePacket(from, type, data) {
 	switch (type) {
 		case 'metadata':
+			if (data.version !== metadata.version)
+				return window.location.reload(true);
+
 			metadata = data;
 			document.getElementById('debug').textContent = JSON.stringify(data, undefined, '    ');
 			break;
@@ -66,9 +76,8 @@ function handlePacket(from, type, data) {
 				break;
 			}
 
-			line.textContent = username + ': ' + data.msg;
-			line.style.color = from in metadata.properties && 'color' in metadata.properties[from] ? metadata.properties[from]['color'] : 'black';
-			line.style.fontFamily = from in metadata.properties && 'font' in metadata.properties[from] ? metadata.properties[from]['font'] : 'Arial';
+			line.textContent = username + ': ' + data.msg.substr(0, 120) + (data.msg.length > 120 ? '...' : '');
+			line.style.color = getProperty(from, 'style.color', 'black');
 
 			document.getElementById('messages').appendChild(line);
 			document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;

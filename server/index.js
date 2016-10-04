@@ -7,6 +7,7 @@
 const WebSocket = require('faye-websocket');
 const http = require('http');
 const crypto = require('crypto');
+const fs = require('fs');
 
 var server = http.createServer();
 var connections = {};
@@ -17,7 +18,8 @@ var changes = {
 	closed: [],
 	properties: []
 };
-var bannedClientPackets = ['changes', 'metadata'];
+var bannedClientPackets = ['changes', 'metadata', 'refresh'];
+var version = fs.readFileSync('../version');
 
 function sendChanges() {
 	if (changes.opened.length < 1 && changes.closed.length < 1 && changes.properties.length < 1)
@@ -60,7 +62,8 @@ function sendMetadata(tokenFilter) {
 			metadata: {
 				index: token,
 				indexes: Object.keys(connections),
-				properties: properties
+				properties: properties,
+				version: version
 			}
 		});
 	});
