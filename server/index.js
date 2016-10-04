@@ -112,7 +112,7 @@ server.on('upgrade', (request, socket, body) => {
 							Object.keys(json.packet.properties || {}).forEach(key => {
 								let property = json.packet.properties[key];
 
-								if (typeof key === 'object')
+								if (typeof property === 'object')
 									return;
 
 								properties[ws.token][key] = property;
