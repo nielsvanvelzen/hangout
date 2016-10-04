@@ -22,6 +22,7 @@ function sendChanges() {
 		return;
 
 	broadcast({
+		from: 'server',
 		type: 'changes',
 		changes: changes
 	});
@@ -51,6 +52,7 @@ function sendMetadata(tokenFilter) {
 		let connection = connections[token];
 
 		connection.sendJson({
+			from: 'server',
 			type: 'metadata',
 			metadata: {
 				index: token,
@@ -81,6 +83,7 @@ server.on('upgrade', (request, socket, body) => {
 			try {
 				let json = JSON.parse(event.data);
 
+				json.from = ws.token || null;
 				json.to = json.to || [];
 				json.packet = json.packet || {};
 				json.packet.type = json.packet.type || 'ping';
