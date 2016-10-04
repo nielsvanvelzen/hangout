@@ -15,6 +15,13 @@ function connect() {
 
 		var props = JSON.parse(window.localStorage.getItem('properties'));
 		send('server', 'properties', props);
+
+		if (!('name' in props)) {
+			var username = prompt('Username');
+
+			if (username.length > 2)
+				setProperty('name', username);
+		}
 	});
 
 	socket.addEventListener('message', function (event) {
