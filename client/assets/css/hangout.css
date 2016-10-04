@@ -63,12 +63,12 @@ form button {
 	background-color: #FFFFFF;
 	border-radius: 5px;
 	display: block;
-	padding: 10px 18px;
 	position: relative;
 	vertical-align: top;
 	float: left;
 	margin: 5px 45px 5px 20px;
 	clear: both;
+	overflow: hidden;
 }
 
 .message::before {
@@ -94,17 +94,24 @@ form button {
 }
 
 .message .username {
+	padding: 10px 18px 8px;
 	font-weight: 200;
 	opacity: 0.6;
-	margin-bottom: 3px;
 }
 
 .message .content {
+	padding: 0 18px 10px;
 	max-width: 100%;
 	font-weight: 300;
 	overflow: hidden;
 	white-space: pre-wrap;
 	overflow-wrap: break-word;
+}
+
+.message img.content {
+	padding: 0;
+	display: block;
+	width: 100%;
 }
 
 .message .content.unknown {

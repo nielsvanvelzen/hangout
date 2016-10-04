@@ -127,7 +127,7 @@ function handlePacket(from, type, data) {
 			message.appendChild(content);
 
 			var messages = document.getElementById('messages');
-			var scrollDown = messages.scrollTop >= messages.scrollHeight - messages.offsetHeight - 10;
+			var scrollDown = messages.scrollTop === 0 || messages.scrollTop >= messages.scrollHeight - messages.offsetHeight - 10;
 
 			messages.appendChild(message);
 
