@@ -83,9 +83,9 @@ server.on('upgrade', (request, socket, body) => {
 			try {
 				let json = JSON.parse(event.data);
 
-				json.from = ws.token || null;
 				json.to = json.to || [];
 				json.packet = json.packet || {};
+				json.packet.from = ws.token || null;
 				json.packet.type = json.packet.type || 'ping';
 				json.packet[json.packet.type] = json.packet[json.packet.type] || {};
 
