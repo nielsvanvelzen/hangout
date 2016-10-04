@@ -5,9 +5,14 @@
 	<link rel="stylesheet" href="assets/css/hangout.css" />
 </head>
 <body>
-	<canvas id="canvas" class="column">
+	<div class="column">
+		<div id="messages"></div>
 
-	</canvas>
+		<form onsubmit="event.preventDefault(); send('*', 'chat', {msg: document.getElementById('message').value}); document.getElementById('message').value = ''; document.getElementById('message').focus();">
+			<input minlength="3" required id="message" placeholder="message" autofocus />
+			<button type="submit">Send</button>
+		</form>
+	</div>
 	<pre class="column" id="debug">
 
 	</pre>

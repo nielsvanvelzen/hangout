@@ -80,37 +80,31 @@ function handlePacket(from, type, data) {
 			document.getElementById('debug').textContent = JSON.stringify(data, undefined, '    ');
 			break;
 
-		case 'draw':
-			context.beginPath();
-			context.fillStyle = getProperty(from, 'style', 'black');
-			var shape = data.shape || 'circle';
+		case 'chat':
+			/**
+			 * <div class="message">
+			 <div class="username">Test gebruiker</div>
+			 <div class="content">Test</div>
+			 </div>
+			 */
 
-			switch (shape) {
-				case 'circle':
-					context.arc(data.x - 5 || 0, data.y - 5 || 0, 10, 0, 2 * Math.PI);
-					break;
+			var message = document.createElement('div');
+			message.classList.add('message');
 
-				case 'rectangle':
-					context.rect(data.x - 5 || 0, data.y - 5 || 0, 10, 10);
-			}
-			context.fill();
+			if (from === metadata.index)
+				message.classList.add('self');
+
+			var username = document.createElement('div');
+			username.classList.add('username');
+			username.textContent = getProperty(from, 'name', 'Unknown user (' + from.substr(0, 6) + ')');
+			message.appendChild(username);
+
+			var content = document.createElement('div');
+			content.classList.add('content');
+			content.textContent = data.msg;
+			message.appendChild(content);
+
+			document.getElementById('messages').appendChild(message);
 			break;
 	}
 }
-
-var canvas = document.getElementById('canvas');
-var context = canvas.getContext('2d');
-
-window.addEventListener('load', function () {
-	canvas.width = canvas.offsetWidth;
-	canvas.height = canvas.offsetHeight;
-
-	canvas.addEventListener('click', function (event) {
-		console.log(event);
-		send('*', 'draw', {
-			shape: 'circle',
-			x: event.pageX,
-			y: event.pageY
-		})
-	});
-});
