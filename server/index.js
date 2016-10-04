@@ -112,13 +112,13 @@ server.on('upgrade', (request, socket, body) => {
 							Object.keys(json.packet.properties || {}).forEach(key => {
 								let property = json.packet.properties[key];
 
-								if (typeof key === Object)
+								if (typeof key === 'object')
 									return;
 
 								properties[ws.token][key] = property;
 							});
 
-							if (properties[ws.token].length > 127)
+							if (properties[ws.token].length > 25)
 								ws.close(1002);
 
 							changes.properties.push(ws.token);
