@@ -5,6 +5,14 @@
 	<link rel="stylesheet" href="assets/css/hangout.css" />
 </head>
 <body>
+	<fieldset style="display: flex; flex-direction: row; height: 500px;">
+		<div id="messages" style="width: 100%; height: 100%; overflow: auto"></div>
+
+		<form onsubmit="event.preventDefault(); send('*', 'chat', {msg: document.getElementById('message').value}); document.getElementById('message').value = ''; document.getElementById('message').focus();">
+			<input id="message" placeholder="message" />
+			<button type="submit">Send</button>
+		</form>
+	</fieldset>
 	<script src="assets/js/hangout.js"></script>
 </body>
 </html>
