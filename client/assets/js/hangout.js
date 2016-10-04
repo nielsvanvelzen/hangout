@@ -113,6 +113,7 @@ function handlePacket(from, type, data) {
 					content = document.createElement('img');
 					content.classList.add('content');
 					content.src = data.src || '';
+					break;
 
 				default:
 					content = document.createElement('div');
@@ -120,6 +121,7 @@ function handlePacket(from, type, data) {
 					content.classList.add('unknown');
 
 					content.innerHTML = 'Unsupported content type';
+					break;
 			}
 
 			message.appendChild(content);
