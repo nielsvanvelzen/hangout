@@ -92,18 +92,30 @@ function handlePacket(from, type, data) {
 			username.textContent = getProperty(from, 'name', 'Unknown user (' + from.substr(0, 6) + ')');
 			message.appendChild(username);
 
-			var content = document.createElement('div');
-			content.classList.add('content');
-			content.textContent = data.msg;
+			var content;
+
+			switch (data.type || 'text') {
+				case 'text':
+					content = document.createElement('div');
+					content.classList.add('content');
+					content.textContent = data.msg;
+
+					var regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})([^#]*)/gmi;
+					var match;
+					var html = content.innerHTML;
+					while ((match = regex.exec(content.textContent)) !== null)
+						html = html.replace(match[0], '<span style="color: #' + match[1] + ';">' + match[2] + '</span>');
+
+					content.innerHTML = html;
+					break;
+
+				case 'image':
+					content = document.createElement('img');
+					content.classList.add('content');
+					content.src = data.src || '';
+			}
+
 			message.appendChild(content);
-
-			var regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})([^#]*)/gmi;
-			var match;
-			var html = content.innerHTML;
-			while ((match = regex.exec(content.textContent)) !== null)
-				html = html.replace(match[0], '<span style="color: #' + match[1] + ';">' + match[2] + '</span>');
-
-			content.innerHTML = html;
 
 			var messages = document.getElementById('messages');
 			var scrollDown = messages.scrollTop >= messages.scrollHeight - messages.offsetHeight - 10;

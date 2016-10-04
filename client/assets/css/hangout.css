@@ -91,13 +91,14 @@ form button {
 	left: auto;
 }
 
-.message .username{
+.message .username {
 	font-weight: 200;
 	opacity: 0.6;
 	margin-bottom: 3px;
 }
 
-.message .content{
+.message .content {
+	max-width: 100%;
 	font-weight: 300;
 	overflow: hidden;
 	white-space: pre-wrap;
