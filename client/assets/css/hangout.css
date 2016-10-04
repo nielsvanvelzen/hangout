@@ -58,15 +58,17 @@ form button {
 }
 
 .message {
-	width: 400px;
+	min-width: 400px;
+	max-width: 600px;
 	background-color: #FFFFFF;
 	border-radius: 5px;
-	display: inline-block;
+	display: block;
 	padding: 10px 18px;
 	position: relative;
 	vertical-align: top;
 	float: left;
 	margin: 5px 45px 5px 20px;
+	clear: both;
 }
 
 .message::before {

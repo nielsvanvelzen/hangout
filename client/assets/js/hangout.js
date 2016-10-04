@@ -77,7 +77,7 @@ function handlePacket(from, type, data) {
 				window.location.reload(true);
 
 			metadata = data;
-			document.getElementById('debug').textContent = JSON.stringify(data, undefined, '    ');
+			//document.getElementById('debug').textContent = JSON.stringify(data, undefined, '    ');
 			break;
 
 		case 'chat':
@@ -120,7 +120,7 @@ function handlePacket(from, type, data) {
 					content.classList.add('content');
 					content.classList.add('unknown');
 
-					content.innerHTML = 'Unsupported content type';
+					content.textContent = 'Unsupported content type';
 					break;
 			}
 
