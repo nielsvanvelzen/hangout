@@ -67,6 +67,8 @@ function handlePacket(from, type, data) {
 			}
 
 			line.textContent = username + ': ' + data.msg;
+			line.style.color = from in metadata.properties && 'color' in metadata.properties[from] ? metadata.properties[from]['color'] : 'black';
+			line.style.fontFamily = from in metadata.properties && 'font' in metadata.properties[from] ? metadata.properties[from]['font'] : 'Arial';
 
 			document.getElementById('messages').appendChild(line);
 			document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
