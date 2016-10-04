@@ -55,8 +55,8 @@ function getProperty(from, property, fallback) {
 function handlePacket(from, type, data) {
 	switch (type) {
 		case 'metadata':
-			if (data.version !== metadata.version)
-				return window.location.reload(true);
+			if (metadata.version !== undefined && data.version !== metadata.version)
+				window.location.reload(true);
 
 			metadata = data;
 			document.getElementById('debug').textContent = JSON.stringify(data, undefined, '    ');
