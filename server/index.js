@@ -10,15 +10,17 @@ const crypto = require('crypto');
 
 var server = http.createServer();
 var connections = {};
+var properties = {};
 var connectionIndex = 0;
 var changes = {
 	opened: [],
-	closed: []
+	closed: [],
+	properties: []
 };
 var bannedClientPackets = ['changes', 'metadata'];
 
 function sendChanges() {
-	if (changes.opened.length < 1 && changes.closed.length < 1)
+	if (changes.opened.length < 1 && changes.closed.length < 1 && changes.properties.length < 1)
 		return;
 
 	broadcast({
@@ -29,7 +31,8 @@ function sendChanges() {
 
 	changes = {
 		opened: [],
-		closed: []
+		closed: [],
+		properties: []
 	};
 
 	sendMetadata();
@@ -56,10 +59,19 @@ function sendMetadata(tokenFilter) {
 			type: 'metadata',
 			metadata: {
 				index: token,
-				indexes: Object.keys(connections)
+				indexes: Object.keys(connections),
+				properties: properties
 			}
 		});
 	});
+}
+
+function ping() {
+	Object.keys(connections).forEach(token => {
+		let connection = connections[token];
+
+		connection.ping();
+	})
 }
 
 server.on('upgrade', (request, socket, body) => {
@@ -75,6 +87,8 @@ server.on('upgrade', (request, socket, body) => {
 				ws.token = crypto.randomBytes(16).toString('hex');
 
 			connections[ws.token] = ws;
+			properties[ws.token] = {};
+
 			sendMetadata(ws.token);
 			changes['opened'].push(ws.token);
 		});
@@ -88,6 +102,16 @@ server.on('upgrade', (request, socket, body) => {
 				json.packet.from = ws.token || null;
 				json.packet.type = json.packet.type || 'ping';
 				json.packet[json.packet.type] = json.packet[json.packet.type] || {};
+
+				if (json.to.indexOf('server') !== -1) {
+					switch (json.packet.type) {
+						case 'properties':
+							properties[ws.token] = Object.assign(json.packet.properties, properties[ws.token]);
+							changes.properties.push(ws.token);
+							break;
+					}
+					return;
+				}
 
 				if (bannedClientPackets.indexOf(json.packet.type) !== -1)
 					return;
@@ -116,10 +140,13 @@ server.on('upgrade', (request, socket, body) => {
 			changes['closed'].push(ws.token);
 
 			delete connections[ws.token];
+			delete properties[ws.token];
+
 			ws = null;
 		});
 	}
 });
 
 setInterval(() => sendChanges(), 500);
+setInterval(() => ping(), 1000 * 20);
 server.listen(13372);
