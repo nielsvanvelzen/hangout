@@ -76,16 +76,35 @@ function handlePacket(from, type, data) {
 				break;
 			}
 
-			line.textContent = username + ': ' + data.msg.substr(0, 120) + (data.msg.length > 120 ? '...' : '');
-			line.style.color = getProperty(from, 'style.color', 'black');
+			if (data.msg.match(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)$/g)) {
+				var parts = data.msg.split('.');
+				var ext = parts[parts.length - 1];
+
+				if (['png', 'jpeg', 'jpg', 'svg', 'gif', 'bmp'].indexOf(ext) !== -1) {
+					var img = document.createElement('img');
+					img.src = data.msg;
+					img.alt = username;
+					img.style.maxWidth = '100%';
+					img.style.maxHeight = '500px';
+
+					line.appendChild(img);
+				} else {
+					var a = document.createElement('a');
+					a.href = data.msg;
+					a.textContent = data.msg.substr(0, 120) + (data.msg.length > 120 ? '...' : '');
+
+					line.appendChild(a);
+				}
+			} else {
+				line.textContent = username + ': ' + data.msg.substr(0, 120) + (data.msg.length > 120 ? '...' : '');
+				line.style.color = getProperty(from, 'style.color', 'black');
+			}
 
 			document.getElementById('messages').appendChild(line);
 			document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
 
 			break;
 	}
-
-	//send(metadata.index, type, data);
 }
 
 function send(to, type, data) {

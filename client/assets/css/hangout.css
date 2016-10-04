@@ -6,6 +6,7 @@ html, body {
 body{
 	margin: 0;
 	display: flex;
+	font-family: 'Segoe UI', 'Ubuntu Light', sans-serif;
 }
 
 .column {
@@ -29,6 +30,7 @@ form input{
 }
 
 #debug{
+	margin: 0;
 	overflow: auto;
 	white-space: pre-wrap;
 	overflow-wrap: break-word;
