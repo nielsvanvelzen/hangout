@@ -109,9 +109,16 @@ server.on('upgrade', (request, socket, body) => {
 				if (json.to.indexOf('server') !== -1) {
 					switch (json.packet.type) {
 						case 'properties':
-							properties[ws.token] = Object.assign(properties[ws.token], json.packet.properties);
+							Object.keys(json.packet.properties || {}).forEach(key => {
+								let property = json.packet.properties[key];
 
-							if (Object.keys(properties[ws.token]) > 127)
+								if (typeof key === Object)
+									return;
+
+								properties[ws.token][key] = property;
+							});
+
+							if (properties[ws.token].length > 127)
 								ws.close(1002);
 
 							changes.properties.push(ws.token);
