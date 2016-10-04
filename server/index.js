@@ -110,6 +110,10 @@ server.on('upgrade', (request, socket, body) => {
 					switch (json.packet.type) {
 						case 'properties':
 							properties[ws.token] = Object.assign(properties[ws.token], json.packet.properties);
+
+							if (Object.keys(properties[ws.token]) > 127)
+								ws.close(1002);
+
 							changes.properties.push(ws.token);
 							break;
 					}
