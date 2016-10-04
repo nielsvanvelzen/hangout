@@ -19,16 +19,6 @@ body{
 	overflow: hidden;
 }
 
-form{
-	background: black;
-	height: 40px;
-	display: flex;
-}
-
-form input{
-	width: 100%;
-}
-
 #debug{
 	margin: 0;
 	overflow: auto;
