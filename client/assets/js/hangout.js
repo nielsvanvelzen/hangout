@@ -38,7 +38,7 @@ function connect() {
 
 		setTimeout(function () {
 			connect();
-		}, 100);
+		}, 500);
 	});
 }
 
@@ -96,6 +96,14 @@ function handlePacket(from, type, data) {
 			content.classList.add('content');
 			content.textContent = data.msg;
 			message.appendChild(content);
+
+			var regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})([^#]*)/gmi;
+			var match;
+			var html = content.innerHTML;
+			while ((match = regex.exec(content.textContent)) !== null)
+				html = html.replace(match[0], '<span style="color: #' + match[1] + ';">' + match[2] + '</span>');
+
+			content.innerHTML = html;
 
 			var messages = document.getElementById('messages');
 			var scrollDown = messages.scrollTop >= messages.scrollHeight - messages.offsetHeight - 10;
