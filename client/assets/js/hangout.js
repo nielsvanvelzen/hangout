@@ -13,14 +13,16 @@ function connect() {
 	socket.addEventListener('open', function () {
 		console.log('Connection opened');
 
-		var props = JSON.parse(window.localStorage.getItem('properties'));
+		var props = JSON.parse(window.localStorage.getItem('properties')) || {};
 		send('server', 'properties', props);
 
 		if (!('name' in props)) {
-			var username = prompt('Username');
+			var username = '';
 
-			if (username.length > 2)
-				setProperty('name', username);
+			while (username.length < 4)
+				username = prompt('Username');
+
+			setProperty('name', username);
 		}
 	});
 
