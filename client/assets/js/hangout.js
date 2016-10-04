@@ -81,13 +81,6 @@ function handlePacket(from, type, data) {
 			break;
 
 		case 'chat':
-			/**
-			 * <div class="message">
-			 <div class="username">Test gebruiker</div>
-			 <div class="content">Test</div>
-			 </div>
-			 */
-
 			var message = document.createElement('div');
 			message.classList.add('message');
 
@@ -104,7 +97,14 @@ function handlePacket(from, type, data) {
 			content.textContent = data.msg;
 			message.appendChild(content);
 
-			document.getElementById('messages').appendChild(message);
+			var messages = document.getElementById('messages');
+			var scrollDown = messages.scrollTop >= messages.scrollHeight - messages.offsetHeight - 10;
+
+			messages.appendChild(message);
+
+			if (scrollDown)
+				messages.scrollTop = messages.scrollHeight;
+
 			break;
 	}
 }

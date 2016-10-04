@@ -9,7 +9,7 @@
 		<div id="messages"></div>
 
 		<form onsubmit="event.preventDefault(); send('*', 'chat', {msg: document.getElementById('message').value}); document.getElementById('message').value = ''; document.getElementById('message').focus();">
-			<input minlength="3" required id="message" placeholder="message" autofocus />
+			<input required id="message" placeholder="message" autofocus />
 			<button type="submit">Send</button>
 		</form>
 	</div>
