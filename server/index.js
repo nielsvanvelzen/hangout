@@ -106,7 +106,7 @@ server.on('upgrade', (request, socket, body) => {
 				if (json.to.indexOf('server') !== -1) {
 					switch (json.packet.type) {
 						case 'properties':
-							properties[ws.token] = Object.assign(json.packet.properties, properties[ws.token]);
+							properties[ws.token] = Object.assign(properties[ws.token], json.packet.properties);
 							changes.properties.push(ws.token);
 							break;
 					}

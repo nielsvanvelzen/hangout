@@ -1,0 +1,33 @@
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+body{
+	margin: 0;
+	display: flex;
+}
+
+.column {
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	overflow: hidden;
+}
+
+form{
+	background: black;
+	height: 40px;
+	display: flex;
+}
+
+form input{
+	width: 100%;
+}
+
+#debug{
+	overflow: auto;
+}

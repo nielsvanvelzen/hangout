@@ -49,6 +49,7 @@ function handlePacket(from, type, data) {
 	switch (type) {
 		case 'metadata':
 			metadata = data;
+			document.getElementById('debug').textContent = JSON.stringify(data, undefined, '    ');
 			break;
 
 		case 'chat':
@@ -57,6 +58,13 @@ function handlePacket(from, type, data) {
 
 			if (from in metadata.properties && 'name' in metadata.properties[from])
 				username = metadata.properties[from]['name'];
+
+			if (username.trim() < 3 || data.msg < 3) {
+				if (from !== metadata.index)
+					send(from, 'chat', {msg: '@' + username + ' plz define a message or username...'});
+
+				break;
+			}
 
 			line.textContent = username + ': ' + data.msg;
 
