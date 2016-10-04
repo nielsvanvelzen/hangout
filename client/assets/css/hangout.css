@@ -104,3 +104,9 @@ form button {
 	white-space: pre-wrap;
 	overflow-wrap: break-word;
 }
+
+.message .content.unknown {
+	text-align: center;
+	opacity: 0.4;
+	font-weight: 200;
+}

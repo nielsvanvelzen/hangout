@@ -94,11 +94,11 @@ function handlePacket(from, type, data) {
 
 			var content;
 
-			switch (data.type || 'text') {
+			switch (data.type || null) {
 				case 'text':
 					content = document.createElement('div');
 					content.classList.add('content');
-					content.textContent = data.msg;
+					content.textContent = data.message;
 
 					var regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})([^#]*)/gmi;
 					var match;
@@ -113,6 +113,13 @@ function handlePacket(from, type, data) {
 					content = document.createElement('img');
 					content.classList.add('content');
 					content.src = data.src || '';
+
+				default:
+					content = document.createElement('div');
+					content.classList.add('content');
+					content.classList.add('unknown');
+
+					content.innerHTML = 'Unsupported content type';
 			}
 
 			message.appendChild(content);
