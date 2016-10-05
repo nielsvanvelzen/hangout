@@ -11,7 +11,7 @@
 	<div class="column">
 		<div id="messages"></div>
 
-		<form onsubmit="event.preventDefault(); send('*', 'chat', {type: 'text', message: document.getElementById('message').value}); document.getElementById('message').value = ''; document.getElementById('message').focus();">
+		<form onsubmit="event.preventDefault(); sendMessage(document.getElementById('message').value); document.getElementById('message').value = ''; document.getElementById('message').focus();">
 			<input required id="message" placeholder="Write a message..." autofocus />
 			<button type="submit">Send</button>
 		</form>

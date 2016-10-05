@@ -72,6 +72,15 @@ function getProperty(from, property, fallback) {
 }
 
 function send(to, type, data) {
+	if (to === metadata.index || to[0] === metadata.index) {
+		console.log('OUT<>IN', type);
+
+		handlePacket(metadata.index, type, data);
+		return;
+	}
+
+	console.log('OUT', type);
+
 	var message = {
 		to: to,
 		packet: {
@@ -112,9 +121,38 @@ function addUser(token) {
 
 function removeUser(token) {
 	var child = document.querySelector('.user[data-token="' + token + '"]');
-	console.log(child);
+
 	if (child !== null)
 		child.parentNode.removeChild(child);
+}
+
+function sendMessage(message) {
+	message = message.trim();
+
+	if (message.substr(0, 1) === '/') {
+		var parts = message.substr(1).split(' ');
+		console.log(parts);
+
+		switch (parts[0].toLowerCase()) {
+			case 'set':
+				setProperty(parts[1] || null, parts[2] || null);
+				break;
+
+			case 'img':
+				send('*', 'chat', {type: 'image', src: parts[1]});
+				break;
+
+			case 'code':
+				send('*', 'chat', {type: 'code', code: parts[1]});
+				break;
+
+			default:
+				send(metadata.index, 'chat', {type: 'code', code: 'Unknown command ' + parts[0] + '.'});
+				break;
+		}
+	} else {
+		send('*', 'chat', {type: 'text', message: message});
+	}
 }
 
 function handlePacket(from, type, data) {
