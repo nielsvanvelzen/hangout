@@ -131,19 +131,18 @@ function sendMessage(message) {
 
 	if (message.substr(0, 1) === '/') {
 		var parts = message.substr(1).split(' ');
-		console.log(parts);
 
 		switch (parts[0].toLowerCase()) {
 			case 'set':
-				setProperty(parts[1] || null, parts[2] || null);
+				setProperty(parts[1] || null, parts.slice(2).join(' ') || null);
 				break;
 
 			case 'img':
-				send('*', 'chat', {type: 'image', src: parts[1]});
+				send('*', 'chat', {type: 'image', src: parts.slice(1).join(' ')});
 				break;
 
 			case 'code':
-				send('*', 'chat', {type: 'code', code: parts[1]});
+				send('*', 'chat', {type: 'code', code: parts.slice(1).join(' ')});
 				break;
 
 			default:
