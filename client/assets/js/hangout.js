@@ -188,6 +188,9 @@ function handlePacket(from, type, data) {
 			break;
 
 		case 'chat':
+			var messages = document.getElementById('messages');
+			var scrollDown = messages.scrollTop === 0 || messages.scrollTop >= messages.scrollHeight - messages.offsetHeight - 10;
+
 			var message = document.createElement('div');
 			message.classList.add('message');
 
@@ -229,6 +232,10 @@ function handlePacket(from, type, data) {
 					content = document.createElement('img');
 					content.classList.add('content');
 					content.src = data.src || '';
+					content.addEventListener('load', function () {
+						if (scrollDown)
+							messages.scrollTop = messages.scrollHeight;
+					});
 					break;
 
 				case 'code':
@@ -258,11 +265,6 @@ function handlePacket(from, type, data) {
 			}
 
 			message.appendChild(content);
-
-			var messages = document.getElementById('messages');
-			//var scrollDown = messages.scrollTop === 0 || messages.scrollTop >= messages.scrollHeight - messages.offsetHeight - 10;
-			var scrollDown = true;
-
 			messages.appendChild(message);
 
 			if (scrollDown)
