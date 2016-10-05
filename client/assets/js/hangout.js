@@ -193,6 +193,9 @@ function handlePacket(from, type, data) {
 		case 'wakeup':
 			var overlay = document.createElement('div');
 			overlay.classList.add('overlay');
+			overlay.addEventListener('click', function (overlay) {
+				document.body.removeChild(overlay);
+			}.bind(null, overlay));
 
 			var img = document.createElement('img');
 			img.src = data.src || '';
