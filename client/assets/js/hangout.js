@@ -129,6 +129,11 @@ function removeUser(token) {
 function sendMessage(message) {
 	message = message.trim();
 
+	if (message.length <= 2) {
+		send(metadata.index, 'chat', {type: 'service', text: 'Message must me larger then 2 characters.'});
+		return;
+	}
+
 	if (message.substr(0, 1) === '/') {
 		var parts = message.substr(1).split(' ');
 
@@ -146,7 +151,7 @@ function sendMessage(message) {
 				break;
 
 			default:
-				send(metadata.index, 'chat', {type: 'code', code: 'Unknown command ' + parts[0] + '.'});
+				send(metadata.index, 'chat', {type: 'service', text: 'Unknown command ' + parts[0] + '.'});
 				break;
 		}
 	} else {
@@ -218,6 +223,17 @@ function handlePacket(from, type, data) {
 					content = document.createElement('pre');
 					content.classList.add('content');
 					content.textContent = data.code || '';
+					break;
+
+				case 'service':
+					if (from === metadata.index || from === 'server')
+						message.removeChild(username);
+
+					message.classList.add('service');
+
+					content = document.createElement('div');
+					content.classList.add('content');
+					content.textContent = data.text || '';
 					break;
 
 				default:
