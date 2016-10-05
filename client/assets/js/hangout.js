@@ -96,6 +96,10 @@ function addUser(token) {
 	var user = document.createElement('div');
 	user.classList.add('user');
 	user.dataset.token = token;
+	user.addEventListener('click', function (token) {
+		document.getElementById('message').value = '/tell ' + token + ' ';
+		document.getElementById('message').focus();
+	}.bind(null, token));
 
 	var name = document.createElement('div');
 	name.classList.add('name');
@@ -152,6 +156,10 @@ function sendMessage(message) {
 
 			case 'send':
 				send('*', parts[1] || null, JSON.parse(parts.slice(2).join(' ')));
+				break;
+
+			case 'tell':
+				send([parts[1] || null, metadata.index], 'chat', {type: 'text', message: parts.slice(2).join(' ')});
 				break;
 
 			default:
