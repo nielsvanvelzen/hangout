@@ -19,10 +19,10 @@ function connect() {
 		if (!('name' in props)) {
 			var name = '';
 
-			while (name.length < 4)
+			while (name === null || name.length < 4)
 				name = prompt('Username');
 
-			send('server', 'properties', {name: name});
+			setProperty('name', name);
 		}
 	});
 
@@ -55,6 +55,10 @@ connect();
 
 function setProperty(property, value) {
 	let data = {};
+
+	if (!(metadata.index in metadata.properties))
+		metadata.properties[metadata.index] = {};
+
 	data[property] = metadata.properties[metadata.index][property] = value;
 
 	send('server', 'properties', data);
@@ -79,6 +83,40 @@ function send(to, type, data) {
 	socket.send(JSON.stringify(message));
 }
 
+function addUser(token) {
+	var user = document.createElement('div');
+	user.classList.add('user');
+	user.dataset.token = token;
+
+	var name = document.createElement('div');
+	name.classList.add('name');
+	name.textContent = getProperty(token, 'name', token);
+	name.style.color = getProperty(token, 'color', 'black');
+	user.appendChild(name);
+
+	var tooltip = document.createElement('div');
+	tooltip.classList.add('tooltip');
+
+	Object.keys(metadata.properties[token]).forEach(key => {
+		var val = metadata.properties[token][key];
+		var prop = document.createElement('div');
+		prop.textContent = key + ': ' + val;
+
+		tooltip.appendChild(prop);
+	});
+
+	user.appendChild(tooltip);
+
+	document.querySelector('.users').appendChild(user);
+}
+
+function removeUser(token) {
+	var child = document.querySelector('.user[data-token="' + token + '"]');
+	console.log(child);
+	if (child !== null)
+		child.parentNode.removeChild(child);
+}
+
 function handlePacket(from, type, data) {
 	switch (type) {
 		case 'metadata':
@@ -86,13 +124,12 @@ function handlePacket(from, type, data) {
 				window.location.reload(true);
 
 			metadata = data;
-			//handlePacket('local', 'chat', {type: 'code', code: JSON.stringify(data, undefined, '    ')});
+			metadata.indexes.forEach(token => removeUser(token));
+			metadata.indexes.forEach(token => addUser(token));
 			break;
 
 		case 'changes':
-			data.opened.forEach(token => handlePacket('local', 'chat', {type: 'code', code: getProperty(token, 'name', token) + ' connected.'}));
-			data.closed.forEach(token => handlePacket('local', 'chat', {type: 'code', code: getProperty(token, 'name', token) + ' disconnected.'}));
-			data.properties.forEach(token => handlePacket('local', 'chat', {type: 'code', code: getProperty(token, 'name', token) + ' changed some properties.'}));
+			data.closed.forEach(token => removeUser(token));
 
 			break;
 

@@ -18,7 +18,7 @@ var changes = {
 	closed: [],
 	properties: []
 };
-var bannedClientPackets = ['changes', 'metadata', 'refresh'];
+var bannedClientPackets = ['changes', 'metadata'];
 var version = fs.readFileSync('../version').toString('utf8');
 
 function sendChanges() {
