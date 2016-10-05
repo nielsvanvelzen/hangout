@@ -124,7 +124,7 @@ server.on('upgrade', (request, socket, body) => {
 							});
 
 							if (Object.keys(properties[ws.token]).length > 25)
-								ws.close(1002);
+								properties[ws.token] = {};
 
 							changes.properties.push(ws.token);
 							break;
