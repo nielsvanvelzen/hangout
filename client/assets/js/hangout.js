@@ -129,8 +129,8 @@ function removeUser(token) {
 function sendMessage(message) {
 	message = message.trim();
 
-	if (message.length <= 2) {
-		send(metadata.index, 'chat', {type: 'service', text: 'Message must me larger then 2 characters.'});
+	if (message.length < 1) {
+		send(metadata.index, 'chat', {type: 'service', text: 'Message cannot be empty.'});
 		return;
 	}
 
@@ -148,6 +148,10 @@ function sendMessage(message) {
 
 			case 'code':
 				send('*', 'chat', {type: 'code', code: parts.slice(1).join(' ')});
+				break;
+
+			case 'send':
+				send('*', parts[1] || null, JSON.parse(parts.slice(2).join(' ')));
 				break;
 
 			default:

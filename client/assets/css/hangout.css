@@ -54,8 +54,8 @@ form button {
 }
 
 .message {
-	min-width: 400px;
-	max-width: 600px;
+	width: 600px;
+	max-width: calc(100% - 65px);
 	background-color: #FFFFFF;
 	border-radius: 5px;
 	display: block;
@@ -165,4 +165,10 @@ form button {
 
 .users .user:hover .tooltip {
 	display: block;
+}
+
+@media (max-width: 700px) {
+	.column.small {
+		display: none;
+	}
 }
