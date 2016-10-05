@@ -72,7 +72,7 @@ function getProperty(from, property, fallback) {
 }
 
 function send(to, type, data) {
-	if (to === metadata.index || to[0] === metadata.index) {
+	if (to === metadata.index || (to[0] === metadata.index && to.length === 1)) {
 		console.log('OUT<>IN', type);
 
 		handlePacket(metadata.index, type, data);
@@ -260,7 +260,8 @@ function handlePacket(from, type, data) {
 			message.appendChild(content);
 
 			var messages = document.getElementById('messages');
-			var scrollDown = messages.scrollTop === 0 || messages.scrollTop >= messages.scrollHeight - messages.offsetHeight - 10;
+			//var scrollDown = messages.scrollTop === 0 || messages.scrollTop >= messages.scrollHeight - messages.offsetHeight - 10;
+			var scrollDown = true;
 
 			messages.appendChild(message);
 
