@@ -199,6 +199,12 @@ function handlePacket(from, type, data) {
 					while ((match = regex.exec(content.textContent)) !== null)
 						html = html.replace(match[0], '<span style="color: #' + match[1] + ';">' + match[2] + '</span>');
 
+					var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+					var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+					var emailAddressPattern = /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim;
+
+					html = html.replace(urlPattern, '<a target="_blank" href="$&">$&</a>').replace(pseudoUrlPattern, '$1<a target="_blank" href="http://$2">$2</a>').replace(emailAddressPattern, '<a target="_blank" href="mailto:$&">$&</a>');
+
 					content.innerHTML = html;
 					break;
 
