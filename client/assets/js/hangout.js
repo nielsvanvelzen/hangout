@@ -199,15 +199,17 @@ function handlePacket(from, type, data) {
 
 			var img = document.createElement('img');
 			img.src = data.src || '';
+			img.addEventListener('click', function (overlay) {
+			document.body.removeChild(overlay);
 
 			overlay.appendChild(img);
 
 			img.addEventListener('load', function () {
 				document.body.appendChild(overlay);
 
-				setTimeout(function (overlay) {
-					document.body.removeChild(overlay);
-				}.bind(null, overlay), 3000);
+				//setTimeout(function (overlay) {
+				//	document.body.removeChild(overlay);
+				//}.bind(null, overlay), 3000);
 			});
 			break;
 
