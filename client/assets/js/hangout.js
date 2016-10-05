@@ -130,7 +130,7 @@ function sendMessage(message) {
 	message = message.trim();
 
 	if (message.length < 1) {
-		send(metadata.index, 'chat', {type: 'service', text: 'Message cannot be empty.'});
+		handlePacket('local', 'chat', {type: 'service', text: 'Message cannot be empty.'});
 		return;
 	}
 
@@ -155,7 +155,7 @@ function sendMessage(message) {
 				break;
 
 			default:
-				send(metadata.index, 'chat', {type: 'service', text: 'Unknown command ' + parts[0] + '.'});
+				handlePacket('local', 'chat', {type: 'service', text: 'Unknown command ' + parts[0] + '.'});
 				break;
 		}
 	} else {
@@ -230,8 +230,8 @@ function handlePacket(from, type, data) {
 					break;
 
 				case 'service':
-					if (from === metadata.index || from === 'server')
-						message.removeChild(username);
+					if (from !== 'local')
+						break;
 
 					message.classList.add('service');
 
