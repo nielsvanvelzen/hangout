@@ -150,10 +150,6 @@ function sendMessage(message) {
 				send('*', 'chat', {type: 'image', src: parts.slice(1).join(' ')});
 				break;
 
-			case 'wakeup':
-				send('*', 'wakeup', {src: parts.slice(1).join(' ')});
-				break;
-
 			case 'code':
 				send('*', 'chat', {type: 'code', code: parts.slice(1).join(' ')});
 				break;
@@ -188,30 +184,6 @@ function handlePacket(from, type, data) {
 
 		case 'changes':
 			data.closed.forEach(token => removeUser(token));
-			break;
-
-		case 'wakeup':
-			var overlay = document.createElement('div');
-			overlay.classList.add('overlay');
-			overlay.addEventListener('click', function (overlay) {
-				document.body.removeChild(overlay);
-			}.bind(null, overlay));
-
-			var img = document.createElement('img');
-			img.src = data.src || '';
-			img.addEventListener('click', function (overlay) {
-				document.body.removeChild(overlay);
-			});
-
-			overlay.appendChild(img);
-
-			img.addEventListener('load', function () {
-				document.body.appendChild(overlay);
-
-				//setTimeout(function (overlay) {
-				//	document.body.removeChild(overlay);
-				//}.bind(null, overlay), 3000);
-			});
 			break;
 
 		case 'chat':
@@ -262,6 +234,25 @@ function handlePacket(from, type, data) {
 					content.addEventListener('load', function () {
 						if (scrollDown)
 							messages.scrollTop = messages.scrollHeight;
+					});
+					content.addEventListener('click', function () {
+						var overlay = document.createElement('div');
+						overlay.classList.add('overlay');
+						overlay.addEventListener('click', function (overlay) {
+							document.body.removeChild(overlay);
+						}.bind(null, overlay));
+
+						var img = document.createElement('img');
+						img.src = data.src || '';
+						img.addEventListener('click', function (overlay) {
+							document.body.removeChild(overlay);
+						});
+
+						overlay.appendChild(img);
+
+						img.addEventListener('load', function () {
+							document.body.appendChild(overlay);
+						});
 					});
 					break;
 
