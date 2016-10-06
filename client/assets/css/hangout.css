@@ -150,7 +150,7 @@ form button {
 .users {
 	height: 100%;
 	background: #f7f7f7;
-	overflow: scroll;
+	overflow: auto;
 }
 
 .users .user {
