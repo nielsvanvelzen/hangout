@@ -51,7 +51,9 @@ function connect() {
 	});
 }
 
-connect();
+
+if (typeof document !== 'undefined')
+	connect();
 
 function setProperty(property, value) {
 	let data = {};
