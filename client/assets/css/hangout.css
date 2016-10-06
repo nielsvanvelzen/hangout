@@ -150,7 +150,6 @@ form button {
 	color: #0000ff;
 	margin-right: 16px;
 	text-align: center;
-	font-size: 22px;
 }
 
 .users .user.self .name::before {
