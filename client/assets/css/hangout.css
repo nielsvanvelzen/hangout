@@ -151,6 +151,7 @@ form button {
 .users {
 	height: 100%;
 	background: #f7f7f7;
+	overflow: auto;
 }
 
 .users .user {
@@ -181,22 +182,6 @@ form button {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-
-.users .user .tooltip {
-	min-width: 400px;
-	max-width: 600px;
-	min-height: 48px;
-	max-height: 500px;
-	display: none;
-	background: #FFFFFF;
-	position: absolute;
-	top: 0;
-	left: 100%;
-	z-index: 100;
-	overflow-wrap: break-word;
-	padding: 16px;
-	box-sizing: border-box;
 }
 
 .users .user:hover {
