@@ -197,6 +197,21 @@ function sendMessage(message) {
 	}
 }
 
+function stylizeText(text, html) {
+	var regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})([^#]*)/gmi;
+	var match;
+	while ((match = regex.exec(text)) !== null)
+		html = html.replace(match[0], '<span style="color: #' + match[1] + ';">' + match[2] + '</span>');
+
+	var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+	var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+	var emailAddressPattern = /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim;
+
+	html = html.replace(urlPattern, '<a target="_blank" href="$&">$&</a>').replace(pseudoUrlPattern, '$1<a target="_blank" href="http://$2">$2</a>').replace(emailAddressPattern, '<a target="_blank" href="mailto:$&">$&</a>');
+
+	return html;
+}
+
 function handlePacket(from, type, data) {
 	switch (type) {
 		case 'metadata':
@@ -237,20 +252,7 @@ function handlePacket(from, type, data) {
 					content = document.createElement('div');
 					content.classList.add('content');
 					content.textContent = data.message;
-
-					var regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})([^#]*)/gmi;
-					var match;
-					var html = content.innerHTML;
-					while ((match = regex.exec(content.textContent)) !== null)
-						html = html.replace(match[0], '<span style="color: #' + match[1] + ';">' + match[2] + '</span>');
-
-					var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
-					var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-					var emailAddressPattern = /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim;
-
-					html = html.replace(urlPattern, '<a target="_blank" href="$&">$&</a>').replace(pseudoUrlPattern, '$1<a target="_blank" href="http://$2">$2</a>').replace(emailAddressPattern, '<a target="_blank" href="mailto:$&">$&</a>');
-
-					content.innerHTML = html;
+					content.innerHTML = stylizeText(data.message, content.innerHTML);
 					break;
 
 				case 'image':
@@ -312,6 +314,8 @@ function handlePacket(from, type, data) {
 					content = document.createElement('div');
 					content.classList.add('content');
 					content.textContent = data.text || '';
+					content.innerHTML = stylizeText(data.text, content.innerHTML);
+
 					break;
 
 				default:
