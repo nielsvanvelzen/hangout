@@ -112,11 +112,17 @@ form button {
 	text-decoration: underline;
 }
 
-.message img.content {
+.message img.content,
+.message iframe.content {
 	padding: 0;
 	display: block;
 	width: 100%;
+	border: none;
 	cursor: pointer;
+}
+
+.message iframe.content {
+	height: 338px;
 }
 
 .message .content.unknown {

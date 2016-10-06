@@ -154,6 +154,17 @@ function sendMessage(message) {
 				send('*', 'chat', {type: 'code', code: parts.slice(1).join(' ')});
 				break;
 
+			case 'yt':
+				var id = parts.slice(1).join(' ');
+
+				if (id.length !== 11) {
+					id = id.split('v=');
+					id = id[1].substr(0, 11);
+				}
+
+				send('*', 'chat', {type: 'youtube', id:id});
+				break;
+
 			case 'send':
 				send('*', parts[1] || null, JSON.parse(parts.slice(2).join(' ')));
 				break;
@@ -260,6 +271,13 @@ function handlePacket(from, type, data) {
 					content = document.createElement('pre');
 					content.classList.add('content');
 					content.textContent = data.code || '';
+					break;
+
+				case 'youtube':
+					content = document.createElement('iframe');
+					content.classList.add('content');
+					content.src = 'https://www.youtube.com/embed/' + (data.id || '') + '?modestbranding=1';
+
 					break;
 
 				case 'service':
