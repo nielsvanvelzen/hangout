@@ -107,7 +107,7 @@ function addUser(token) {
 
 	var name = document.createElement('div');
 	name.classList.add('name');
-	name.textContent = getProperty(token, 'name', token);
+	name.textContent = getProperty(token, 'name', 'Unknown user (' + token.substr(0, 6) + ')');
 	name.style.color = getProperty(token, 'color', 'black');
 	user.appendChild(name);
 
@@ -148,6 +148,13 @@ function sendMessage(message) {
 		switch (parts[0].toLowerCase()) {
 			case 'set':
 				setProperty(parts[1] || null, parts.slice(2).join(' ') || null);
+				break;
+
+			case 'get':
+				var key = parts.slice(1).join(' ') || null;
+				var val = getProperty(metadata.index, key);
+
+				handlePacket('local', 'chat', {type: 'service', text: key + ' = ' + val});
 				break;
 
 			case 'img':
