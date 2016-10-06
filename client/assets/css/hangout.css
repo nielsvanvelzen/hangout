@@ -131,6 +131,21 @@ form button {
 	font-weight: 200;
 }
 
+.message.me .username,
+.message.me .content {
+	display: inline;
+	padding: 0;
+}
+
+.message.me .username::after {
+	content: ' ';
+	display: inline;
+}
+
+.message.me {
+	padding: 10px;
+}
+
 .users {
 	height: 100%;
 	background: #f7f7f7;

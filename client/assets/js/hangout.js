@@ -177,6 +177,10 @@ function sendMessage(message) {
 				send([parts[1] || null, metadata.index], 'chat', {type: 'text', message: parts.slice(2).join(' ')});
 				break;
 
+			case 'me':
+				send('*', 'chat', {type: 'me', text: parts.slice(1).join(' ')});
+				break;
+
 			default:
 				handlePacket('local', 'chat', {type: 'service', text: 'Unknown command ' + parts[0] + '.'});
 				break;
@@ -280,7 +284,7 @@ function handlePacket(from, type, data) {
 				case 'youtube':
 					content = document.createElement('iframe');
 					content.classList.add('content');
-					content.src = 'https://www.youtube.com/embed/' + (data.id || '') + '?modestbranding=1';
+					content.src = 'https://www.youtube.com/embed/' + (data.id.substr(0, 11) || '') + '?modestbranding=1';
 
 					break;
 
@@ -289,6 +293,14 @@ function handlePacket(from, type, data) {
 						break;
 
 					message.classList.add('service');
+
+					content = document.createElement('div');
+					content.classList.add('content');
+					content.textContent = data.text || '';
+					break;
+
+				case 'me':
+					message.classList.add('me');
 
 					content = document.createElement('div');
 					content.classList.add('content');
