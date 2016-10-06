@@ -95,6 +95,10 @@ function send(to, type, data) {
 function addUser(token) {
 	var user = document.createElement('div');
 	user.classList.add('user');
+
+	if (token === metadata.index)
+		user.classList.add('self');
+
 	user.dataset.token = token;
 	user.addEventListener('click', function (token) {
 		document.getElementById('message').value = '/tell ' + token + ' ';
@@ -162,7 +166,7 @@ function sendMessage(message) {
 					id = id[1].substr(0, 11);
 				}
 
-				send('*', 'chat', {type: 'youtube', id:id});
+				send('*', 'chat', {type: 'youtube', id: id});
 				break;
 
 			case 'send':

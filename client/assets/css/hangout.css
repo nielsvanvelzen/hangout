@@ -143,6 +143,20 @@ form button {
 	position: relative;
 }
 
+.users .user .name::before {
+	width: 16px;
+	content: '';
+	display: inline-block;
+	color: #0000ff;
+	margin-right: 16px;
+	text-align: center;
+	font-size: 22px;
+}
+
+.users .user.self .name::before {
+	content: '\2605';
+}
+
 .users .user .name {
 	height: 48px;
 	padding: 0 16px;
