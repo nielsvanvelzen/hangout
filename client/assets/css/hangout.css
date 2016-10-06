@@ -123,6 +123,7 @@ form button {
 }
 
 .message iframe.content {
+	width: 600px;
 	height: 338px;
 }
 
@@ -177,6 +178,9 @@ form button {
 	padding: 0 16px;
 	line-height: 48px;
 	opacity: 0.6;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .users .user .tooltip {
