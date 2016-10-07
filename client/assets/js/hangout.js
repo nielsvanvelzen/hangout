@@ -115,15 +115,15 @@ function addUser(token) {
 
 	// var tooltip = document.createElement('div');
 	// tooltip.classList.add('tooltip');
-    //
+	//
 	// Object.keys(metadata.properties[token]).forEach(key => {
 	// 	var val = metadata.properties[token][key];
 	// 	var prop = document.createElement('div');
 	// 	prop.textContent = key + ': ' + val;
-    //
+	//
 	// 	tooltip.appendChild(prop);
 	// });
-    //
+	//
 	// user.appendChild(tooltip);
 
 	document.querySelector('.users').appendChild(user);
