@@ -115,15 +115,15 @@ function addUser(token) {
 
 	// var tooltip = document.createElement('div');
 	// tooltip.classList.add('tooltip');
-    //
+	//
 	// Object.keys(metadata.properties[token]).forEach(key => {
 	// 	var val = metadata.properties[token][key];
 	// 	var prop = document.createElement('div');
 	// 	prop.textContent = key + ': ' + val;
-    //
+	//
 	// 	tooltip.appendChild(prop);
 	// });
-    //
+	//
 	// user.appendChild(tooltip);
 
 	document.querySelector('.users').appendChild(user);
@@ -188,6 +188,10 @@ function sendMessage(message) {
 
 			case 'me':
 				send('*', 'chat', {type: 'me', text: parts.slice(1).join(' ')});
+				break;
+
+			case 'vw':
+				send('*', 'chat', {type: 'vw'});
 				break;
 
 			default:
@@ -296,7 +300,6 @@ function handlePacket(from, type, data) {
 					content = document.createElement('iframe');
 					content.classList.add('content');
 					content.src = 'https://www.youtube.com/embed/' + (data.id.substr(0, 11) || '') + '?modestbranding=1';
-
 					break;
 
 				case 'service':
@@ -317,7 +320,21 @@ function handlePacket(from, type, data) {
 					content.classList.add('content');
 					content.textContent = data.text || '';
 					content.innerHTML = stylizeText(data.text, content.innerHTML);
+					break;
 
+				case 'vw':
+					var overlay = document.createElement('div');
+					document.body.appendChild(overlay);
+					overlay.classList.add('vw');
+					overlay.addEventListener('click', function (overlay) {
+						document.body.removeChild(overlay);
+					}.bind(null, overlay));
+
+					message.classList.add('service');
+
+					content = document.createElement('div');
+					content.classList.add('content');
+					content.textContent = 'Volwater alert!';
 					break;
 
 				default:
