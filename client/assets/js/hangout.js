@@ -190,6 +190,10 @@ function sendMessage(message) {
 				send('*', 'chat', {type: 'me', text: parts.slice(1).join(' ')});
 				break;
 
+			case 'debug':
+				handlePacket('local', 'chat', {type: 'code', code: JSON.stringify(metadata, undefined, '	')});
+				break;
+
 			default:
 				handlePacket('local', 'chat', {type: 'service', text: 'Unknown command ' + parts[0] + '.'});
 				break;
