@@ -190,6 +190,10 @@ function sendMessage(message) {
 				send('*', 'chat', {type: 'me', text: parts.slice(1).join(' ')});
 				break;
 
+			case 'vw':
+				send('*', 'chat', {type: 'vw'});
+				break;
+
 			default:
 				handlePacket('local', 'chat', {type: 'service', text: 'Unknown command ' + parts[0] + '.'});
 				break;
@@ -296,7 +300,6 @@ function handlePacket(from, type, data) {
 					content = document.createElement('iframe');
 					content.classList.add('content');
 					content.src = 'https://www.youtube.com/embed/' + (data.id.substr(0, 11) || '') + '?modestbranding=1';
-
 					break;
 
 				case 'service':
@@ -317,7 +320,23 @@ function handlePacket(from, type, data) {
 					content.classList.add('content');
 					content.textContent = data.text || '';
 					content.innerHTML = stylizeText(data.text, content.innerHTML);
+					break;
 
+				case 'vw':
+					var overlay = document.createElement('div');
+					document.body.appendChild(overlay);
+					overlay.classList.add('overlay');
+					overlay.classList.add('overlay-vw');
+					overlay.addEventListener('click', function (overlay) {
+						document.body.removeChild(overlay);
+					}.bind(null, overlay));
+
+					message.classList.add('service');
+
+					content = document.createElement('div');
+					content.classList.add('content');
+					message.removeChild(username);
+					content.textContent = getProperty(from, 'name', 'Unknown user (' + from.substr(0, 6) + ')') + ' hid everyone\'s screen.';
 					break;
 
 				default:
