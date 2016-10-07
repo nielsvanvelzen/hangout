@@ -325,7 +325,8 @@ function handlePacket(from, type, data) {
 				case 'vw':
 					var overlay = document.createElement('div');
 					document.body.appendChild(overlay);
-					overlay.classList.add('vw');
+					overlay.classList.add('overlay');
+					overlay.classList.add('overlay-vw');
 					overlay.addEventListener('click', function (overlay) {
 						document.body.removeChild(overlay);
 					}.bind(null, overlay));
@@ -334,7 +335,8 @@ function handlePacket(from, type, data) {
 
 					content = document.createElement('div');
 					content.classList.add('content');
-					content.textContent = 'Volwater alert!';
+					message.removeChild(username);
+					content.textContent = getProperty(from, 'name', 'Unknown user (' + from.substr(0, 6) + ')') + ' hid everyone\'s screen.';
 					break;
 
 				default:
